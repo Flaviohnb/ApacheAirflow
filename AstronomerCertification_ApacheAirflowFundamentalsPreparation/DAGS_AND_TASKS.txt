@@ -1,0 +1,65 @@
+|||| DAG Skeleton
+____________________________________________________________________________________________
+
+|||| DEMYSTIFYING DAG SCHEDULING
+
+Parametro para scheduler do seu DAG:
+
+1º - start_date:
+    . Define o dia que sua DAG será iniciada;
+
+2º - schedule_interval:
+    . Define a frequencia que dua DAG será "engatilhada";
+
+EX:
+
+start_date = 01/01/2021 10:00 AM
+schedule_interval = 10 min
+
+execution_date  ->  01/01/2021 at 10:00 AM
+start_date      ->  01/01/2021 at 10:10 AM
+New start_date  ->  01/01/2021 at 10:20 AM
+
+3º - end_date: 
+    . Definir a data que seu "schedule" nao execute mais;
+
+____________________________________________________________________________________________
+
+|||| PLAYING WITH THE START_DATE
+
+No arquivo 'simple_dag.py'
+
+|||| PLAYING WITH THE SCHEDULE_INTERVAL
+
+No arquivo 'simple_dag.py'
+
+|||| BACKFILLING AND CATCHUP
+
+No arquivo 'simple_dag.py'
+
+|||| FOCUS ON OPERATORS 
+
+No arquivo 'simple_dag.py'
+
+|||| EXECUTING PYTHON FUNCTIONS
+
+No arquivo 'simple_dag.py'
+
+|||| PUTING YOUR DAG ON HOLD
+
+No arquivo 'simple_dag.py'
+
+|||| EXECUTING BASH COMMANDS
+
+No arquivo 'simple_dag.py'
+
+|||| DEFINE THE PATH!
+
+No arquivo 'simple_dag.py'
+
+|||| EXCHANGING DATA
+
+No arquivo 'simple_dag.py'
+
+|||| OPS... WE GOT A FAILURE
+

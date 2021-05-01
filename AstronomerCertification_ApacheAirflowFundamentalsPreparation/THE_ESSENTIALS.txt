@@ -1,0 +1,205 @@
+|||| Why Airflow?
+
+REF: https://towardsdatascience.com/why-apache-airflow-is-a-great-choice-for-managing-data-pipelines-48effcce3e41
+____________________________________________________________________________________________
+
+|||| Whats is Airflow?
+
+- Plataforma de gerenciamento de fluxo de trabalho.
+- Criar, agendar e monitorar fluxos de trabalho de maneira programática. 
+
+Beneficios:
+
+1. Pipelines de dados dinamicos
+2. Altamente escalavel
+3. Extremamente interetivo (Interface do usuario, Interface de linha de comando, REST API)
+4. Extensivel 
+
+Não é:
+1. Não é uma estrutura de streaming ou processamento de dados (Não tente usar Airflow como o Spark)
+____________________________________________________________________________________________
+
+|||| Core Componentes
+
+1. Web Server
+    Basicamente, este é apenas um aplicativo Flask que exibe o status de seus trabalhos e fornece uma interface para interagir com o banco de dados e ler logs de um armazenamento de arquivo remoto (S3, Google Cloud Storage, AzureBlobs, ElasticSearch etc.).
+
+2. Scheduler
+    Este componente é responsável por agendar jobs. Este é um processo Python multithread que usa o objeto DAGb para decidir quais tarefas precisam ser executadas, quando e onde. O estado da tarefa é recuperado e atualizado do banco de dados de acordo. O servidor da web então usa esses estados salvos para exibir as informações do trabalho. 
+
+3. Metadata database
+    Um banco de dados (geralmente PostgresDB ou MySql, mas pode ser qualquer um com suporte SQLAlchemy) que determina como os outros componentes interagem. O planejador armazena e atualiza os status das tarefas, que o servidor da Web usa para exibir as informações do trabalho.
+
+4. Executor (como suas tarefas serao executadas no airflow)
+    O mecanismo pelo qual o trabalho realmente é executado. Existem vários executores, cada um com seus pontos fortes e fracos.
+
+5. Worker (onde sua tarefa ira executar)
+    Os Worker do Airflow ouvem e processam filas contendo tarefas de fluxo de trabalho.
+
+____________________________________________________________________________________________
+
+|||| Common Architectures
+
+1. One Node (Executando os componentes WEB SERVER, SCHEDULER, METASTORE, EXECUTOR, na mesma maquina 'nó')
+2. Multi Nodes 
+    Node 1 (WEB SERVER, SCHEDULERM EXECUTOR)
+    Node 2 (METASTORE, QUEUE)
+    Worker Node 1 (Airflow Worker)
+    Worker Node 2 (Airflow Worker)
+    Worker Node 3 (Airflow Worker) 
+
+____________________________________________________________________________________________
+
+|||| Core Concepts
+
+1. DAGs (Pipeline de dados)
+    . É uma coleção de todas as tarefas que você deseja executar, organizadas de uma forma que reflete suas relações e dependências;
+    . Sem Loop's;
+
+2. Operatos
+    . Tarefa no seu DAG;
+    . Objeto proximo da tarefa que você queira executar;
+    . Tipo:
+        . Action Opertators: Permite que você execute algo na sua pipeline. Ex: Executar função python, irá utilizar o operador python;
+        . Transfer Opertators: Permite transferir o dado da origem para o destino. Ex: MySql operator para transferir do mysql pro prestodb; 
+        . Sensor Operators: Quando você precisa aguardar algo para o proximo passo. Ex: File Sensor, quando você precisa carregar um arquivo em um local especifico;
+
+3. Tasks
+    . Instancia de um operador;
+    . Quando ela é "schedulada" vira uma "Task Instance Object";
+    . Define uma unidade de trabalho dentro de um DAG. Ele é representado como um nó no gráfico DAG, e está escrito em Python.
+
+4. Dependencies
+    . É necessario especificar as dependencias entre seus operadores;
+    . Boas praticas, utilizar operadores "<<" ou ">>" ao inves de "set_upstream" ou "set_downstream";
+
+5. Workflow
+    . Conjunto completo DAG, Operator, Task
+
+____________________________________________________________________________________________
+
+|||| Task Lifecycle
+
+. Uma tarefa passa por várias etapas do início ao término. Essas etapas são exibidos por uma cor representando cada etapa.
+
+O fluxo feliz consiste nas seguintes etapas:
+
+1. Nenhum status (agendador criou instância de tarefa vazia)
+2. Agendado (agendar determinado instância de tarefa precisa ser executado)
+3. Fila (agendador enviou tarefa ao executor para executar na fila)
+4. Correndo (o trabalhador pegou uma tarefa e agora está executando-a)
+5. Sucesso (tarefa concluída)
+
+REF: https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#:~:text=Task%20Lifecycle,-A%20task%20goes&text=No%20status%20(scheduler%20created%20empty%20task%20instance)&text=Queued%20(scheduler%20sent%20task%20to,Success%20(task%20completed)
+
+____________________________________________________________________________________________
+
+|||| Installing Apache Airflow
+
+1. Primeiro, certifique-se de ter o Python 3.6+ instalado em seu computador.
+Observe que, desde o Apache Airflow 2.0, você não pode mais executá-lo no Python 2.7.
+
+2. A maneira oficial de instalar o Airflow é com o Pip.
+Pip é um gerenciador de pacotes Python usado para instalar e gerenciar pacotes Python.
+Você usará o pip para instalar o Apache Airflow, bem como todas as dependências de que ele precisa para ser executado.
+
+3. No Linux, você deve instalar certas dependências do sistema operacional, conforme mostrado abaixo: 
+
+sudo apt-get install -y --no-install-recommends \
+        freetds-bin \
+        krb5-user \
+        ldap-utils \
+        libffi6 \
+        libsasl2-2 \
+        libsasl2-modules \
+        libssl1.1 \
+        locales  \
+        lsb-release \
+        sasl2-bin \
+        sqlite3 \
+        unixodbc
+    
+4. Instalando Apache Airflow
+
+Depois de concluir as etapas anteriores, você está pronto para instalar o Apache Airflow.
+O comando é muito simples, você só precisa executar:
+
+'$ pip instalar apache-airflow'
+
+Mas, espere um minuto!
+Essa não é a melhor maneira. Na verdade, o Airflow traz MUITAS dependências.
+O problema é que, se uma dependência for atualizada, o comando anterior instalará a versão mais recente, o que pode causar incompatibilidades de dependência e erros.
+É por isso que sempre é recomendável adicionar um arquivo de restrição.
+Um arquivo de restrição contém todas as bibliotecas Python necessárias para o Airflow junto com sua versão pined.
+Dessa forma, você garante que as dependências corretas estão instaladas.
+Execute o seguinte comando:
+
+'$ pip install apache-airflow --constraint'
+
+https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt
+
+Onde AIRFLOW_VERSION é a versão do Airflow que você deseja instalar, 2.0.0 e PYTHON_VERSION, sua versão python 3.6, 3.7 ou 3.8.
+
+5. Bem feito!
+
+Neste ponto, você instalou o Airflow com sucesso, mas ... você não pode executá-lo.
+Porque?
+Porque ele precisa ser inicializado primeiro.
+
+Este processo executa 2 etapas:
+. Gerar os arquivos e pastas necessários para o Airflow (logs /, airflow.cfg, unitests.cfg etc.);
+. Inicializando o banco de dados de metadados (SQLite por padrão);
+
+AIRFLOW_HOME
+
+Por padrão, os arquivos e pastas são gerados na pasta '$ ~/airflow';
+Você pode modificar esse comportamento definindo a variável de ambiente AIRFLOW_HOME.
+Por exemplo, para inicializar o fluxo de ar na pasta '$ /opt', exporte a seguinte variável de ambiente:
+
+AIRFLOW_HOME = /opt/airflow
+
+DB init
+Assim que estiver familiarizado com o Airflow, inicialize o Airflow com:
+'$ airflow db init'
+
+____________________________________________________________________________________________
+
+|||| Extras and Providers
+
+Extras: Instalar configurações de dependencias para sua feture. Executar PODs no kubernetes, voce instalar o kubernetes extras.
+Providers: Permitem adicionar funcionalidades no airflow. Se voce apenas precisar de alguns operadores webhooks é necessario instalar Providers. Por exemplo, se quiser utilizar o postgrees, é necessario instalar o postgrees providers.
+
+____________________________________________________________________________________________
+
+|||| Upgrading Apache Airflow
+
+Você não quer ficar preso a uma versão mais antiga do Airflow, quer?
+
+Passos:
+Vamos descobrir as diferentes etapas para atualizar o Airflow 2.0.0 para 2.0.1, por exemplo.
+
+1 / DB
+Certifique-se de fazer um backup do banco de dados de metadados do Airflow. Perder seus dados é a pior coisa que pode acontecer, portanto, sempre faça backup de seus dados antes de qualquer atualização.
+
+Se você é baseado no Postgres, pg_dump e pg_dumpall são seus amigos.
+Existem diferentes maneiras de fazer backup de seu banco de dados, mas tirar um instantâneo é a mais fácil.
+
+2 / DAGs
+Certifique-se de que não haja recursos obsoletos em seus DAGs. Recursos que não são mais suportados.
+
+Pause todos os DAGs e certifique-se de que nenhuma tarefa esteja em execução.
+Porque? Porque você não deseja que nada seja gravado no banco de dados enquanto ele está sendo atualizado.
+
+3 / Atualizando o Apache Airflow
+Depois de concluir as etapas anteriores, você está pronto para instalar o Apache Airflow.
+
+O comando é muito simples, você só precisa executar:
+'$ pip install "apache-airflow [any_extra] == 2.0.1" --constraint constraint-file'
+
+4 / Atualize o banco de dados
+Você tem que executar, '$ airflow db upgrade' para modificar e aplicar o esquema de banco de dados mais recente, bem como para mapear os dados existentes nele.
+
+5 / Reiniciar
+Finalmente, reinicie o agendador, servidor da web e trabalhador(es).
+Observe que esta é a maneira mais fácil de atualizar o Apache Airflow. Obviamente, pode ser mais complexo do que isso, de acordo com suas restrições.
+Se você não deveria ter tempo de inatividade, o tamanho de seus dados, sua arquitetura, agendadores múltiplos ou não etc.

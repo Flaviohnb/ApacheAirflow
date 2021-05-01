@@ -1,0 +1,95 @@
+|||| Instalando Docker
+
+|| EN
+
+Installing Docker
+Docker is an open source platform for developing, shipping and running applications.
+
+It allows to run any application regardless of the operating system.
+
+Important!
+. If you don't know Docker, don't worry, we just use it for running Airflow
+. If you can't install Docker or don't want to, you can still follow the prep course
+. If you already have Airflow running on your computer, you can skip this part
+
+Steps
+
+Pretty straightforward,
+
+1. Go to https://docs.docker.com/get-docker/
+2. Select your operating system
+3. Follow the instructions, you shouldn't get any trouble
+4. Once Docker is installed, you can install Docker Compose
+5. Go to https://docs.docker.com/compose/install/
+6. Well done!
+
+|| PT-BR
+
+Instalando Docker
+Docker é uma plataforma de código aberto para desenvolvimento, envio e execução de aplicativos.
+
+Permite executar qualquer aplicativo independente do sistema operacional.
+
+Importante!
+. Se você não conhece o Docker, não se preocupe, nós apenas o usamos para executar o Airflow
+. Se você não consegue instalar o Docker ou não quer, você ainda pode seguir o curso preparatório
+. Se você já tem o Airflow em execução no seu computador, pode pular esta parte
+
+Passos
+
+Bem direto,
+
+1. Acesse https://docs.docker.com/get-docker/
+2. Selecione seu sistema operacional
+3. Siga as instruções, você não deve ter problemas
+4. Depois que o Docker estiver instalado, você pode instalar o Docker Compose
+5. Vá para https://docs.docker.com/compose/install/
+6. Bem feito! 
+
+|____________________________________________________________________________________________
+
+|||| Instalando Astronomer CLI
+
+|| EN
+
+Installing the Astronomer CLI
+Astronomer's open source CLI is the easiest and fastest way to run Apache Airflow on your machine
+
+Running on top of Docker, with two simple commands you get Airflow running
+
+Important!
+If you can't install the Astronomer CLI or don't want to, you can still follow the prep course
+If you already have Airflow running on your computer, you can skip this part
+
+Steps
+Like Docker, it's rather straightforward,
+
+1. Go to https://www.astronomer.io/docs/cloud/stable/develop/cli-quickstart
+2. If you are on MacOS -> Homebrew, if Linux -> cURL and if Windows there is a special guide for you.
+3. Follow the instructions, until the step 4 included.
+
+You're ready!
+
+|| PT-BR
+
+Instalando o Astrônomo CLI
+A CLI de código aberto do Astrônomo é a maneira mais fácil e rápida de executar o Apache Airflow em sua máquina
+
+Executando em cima do Docker, com dois comandos simples você faz o Airflow rodar
+
+Importante!
+Se você não pode instalar o Astronomer CLI ou não quiser, você ainda pode seguir o curso preparatório
+Se você já tem o Airflow em execução no seu computador, pode pular esta parte
+
+Degraus
+Como o Docker, é bastante simples,
+
+1. Vá para https://www.astronomer.io/docs/cloud/stable/develop/cli-quickstart
+2. Se você está em MacOS -> Homebrew, se Linux -> cURL e se Windows existe um guia especial para você.
+3. Siga as instruções, até a etapa 4 incluída.
+
+Você está pronto! 
+
+|____________________________________________________________________________________________
+
+Iniciar com Astro CLI utilizando 2 comandos "astro dev init" e "astro dev start"

@@ -1,0 +1,25 @@
+|||| THE DEFAULT EXECUTOR
+
+Executor* = Os executores são o mecanismo pelo qual as instâncias da tarefa são executadas. Airflow tem suporte para vários executores. A corrente usada é determinada pela opção do executor na seção [core] do arquivo de configuração. Esta opção deve conter o nome do executor, por exemplo KubernetesExecutor se for um executor principal. Se for para carregar seu próprio executor, você deve especificar o caminho completo para o módulo, por exemplo, my_acme_company.executors.MyCustomExecutor. 
+
+Executores definem o caminho que sua TASKS irao executar em sua instancia AIRFLOW
+
+O SequentialExecutor é o executor padrão quando você instala o airflow pela primeira vez. É o único executor que pode ser usado com o sqlite, já que o sqlite não oferece suporte a conexões múltiplas. Este executor executará apenas uma instância de tarefa por vez. Para o caso de uso de produção, use outros executores.
+
+|||| CONCURRENCY, THE PARAMETERS YOU MUST KNOW!
+
+Parallelims -> Define o numero maximo de tasks que você pode executar ao mesmo tempo em sua instancia do Airflow. Isso significa que em todos os DAGs em execução, não mais do que 32 tarefas serão executadas ao mesmo tempo. 
+
+Dag_Concurrency -> É o número de instâncias de tarefas com permissão para serem executadas simultaneamente em um dag específico. Em outras palavras, você poderia ter 2 DAGs executando 16 tarefas cada um em paralelo, mas um único DAG com 50 tarefas também executaria apenas 16 tarefas - não 32. Default 16.
+
+Max_Active_Runs_Per_Dag -> O número máximo de execuções de DAG ativas por DAG. Default 16. 
+
+Max_Active_Runs ->  O numero maximo de execuções em um DAG especifico.
+
+Concurrency -> O número de instâncias de tarefas permitidas para serem executadas simultaneamente pelo planejador em um DIA. Pode ser substituído pela simultaneidade no nível do DAG. 
+
+|||| START SCALING APACHE AIRFLOW
+
+|||| SCALING TO THE INFINITY!
+
+Airflow celery executor -> Nesta configuração, o executor do airflow distribui a tarefa por vários celery workers que podem ser executados em máquinas diferentes usando serviços de enfileiramento de mensagens. Esta é a opção mais escalonável, pois não é limitada pelo recurso disponível no nó mestre. 

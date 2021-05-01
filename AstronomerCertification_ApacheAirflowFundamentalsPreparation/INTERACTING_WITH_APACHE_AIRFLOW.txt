@@ -1,0 +1,89 @@
+|||| The 3 ways
+
+Existem 3 maneiras para interagir com o apache airflow.
+
+1º - User Interface (U.I.):
+    Utilizado principalmente para vizualizar o historico de pipelines, modificar logs.
+2º - Command Line Interface (C.L.I):
+    Utilizado para testar suas tasks, atualizar/iniciar o airflow. Se por alguma razao vc nao tiver acesso ao UI, podera utilizar o CLI para utilizar o airflow.
+3º - REST API: 
+    Bastante utilizado para interagir o airflow com outras ferramentas.
+____________________________________________________________________________________________
+
+|||| DAGs View
+
+Possui informações de status e configuração para suas DAGs
+____________________________________________________________________________________________
+
+|||| Tree View
+
+Fácil vizualização de status para todas as DAGs em execução
+____________________________________________________________________________________________
+
+|||| Graph View
+
+Perfeito para verificar as dependencias de suas pipelines.
+____________________________________________________________________________________________
+
+|||| Gantt View
+
+Te ajuda a analisar a tasks em relação ao tempo de execução, se estão executando em paralelo.
+____________________________________________________________________________________________
+
+|||| Interacting with Tasks
+
+____________________________________________________________________________________________
+
+|||| The Commands to Know
+
+Permite que voce inicialize a database do airflow, como tambem quando executado pela primeira vez, ira gerar arquivos e pastas necessarios para o airflow:
+
+$ airflow db init 
+
+Atualizar a instancia do airflow:
+
+$ airflow db upgrade
+
+Remove tudo na base de dados. "Nunca utilizar esse comando se estiver com o Airflow em produção":
+
+$ airflow db reset
+
+Iniciarlizar o webserver user interface:
+
+$ airflow webserver
+
+Iniciar o scheduler:
+
+$ airflow scheduler
+
+Iniciar o celery worker (uma das maneiras que você pode escalar o número de trabalhadores): 
+
+$ airflow celery worker 
+
+DAGS COMMANDS:
+
+    Pausar:
+    $ airflow dags pause
+
+    Reiniciar:
+    $ airflow dags unpause
+
+    Gatilho:
+    $ airflow dags trigger -e EXECUTION
+
+    Dags em execução:
+    $ airflow dags list
+
+    Vizualizar todas as tasks que a dag "example_dag" possui:
+    $ airflow tasks list example_dag
+
+    Adicionar uma nova tarefa no DAG "example_dag":
+    $ airflow tasks test bash_print_date1 2021-01-01
+
+    Reexecutar uma task anterior:
+    $ airflow dags backfill -s 2021-01-01 -e 2021-01-05 --reset_dagruns example_dag
+
+____________________________________________________________________________________________
+
+|||| The REST API
+
